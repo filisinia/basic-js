@@ -5,70 +5,37 @@ const { NotImplementedError } = require('../extensions/index.js');
  *
  */
 const chainMaker = {
-  chains: '',
-  chainsLength: 0,
+  chains: [],
 
   getLength() {
-    throw new NotImplementedError('Not implemented');
-    return this.chainsLength;
+    return this.chains.length;
   },
-  addLink(value) {
-    throw new NotImplementedError('Not implemented');
-    if (value) {
-      this.chains === '' ? this.chains += (`( ${value} )`) : this.chains += (`~~( ${value} )`);
-    } else {
-      this.chains === '' ? this.chains += (`( )`) : this.chains += (`~~( )`);
-    }
-    this.chainsLength++;
 
-    return this.chains;
+  addLink(value) {
+    this.chains.push(`( ${value} )`);
+    return this;
   },
+
   removeLink(position) {
-    throw new NotImplementedError('Not implemented');
-    if (!Number.isInteger(position)) {
+    if (!Number.isInteger(position) || position <= 0 || position > this.chains.length) {
+      this.chains = [];
       throw new Error("You can't remove incorrect link!");
     }
-
-    let chainToRemove = this.chains.split('~~').splice(position, 1).join('');
-    this.chainsLength--;
-
-    if(position === 0) this.chains = this.chains.replace(`${chainToRemove}~~`, '');
-    if(position !== 0) this.chains = this.chains.replace(`~~${chainToRemove}`, '');
-
+    this.chains.splice(position - 1, 1);
     return this;
   },
+
   reverseChain() {
-    throw new NotImplementedError('Not implemented');
-    this.chains = this.chains.split('~~').reverse().join('~~');
-
+    this.chains = this.chains.reverse();
     return this;
   },
-  finishChain() {
-    throw new NotImplementedError('Not implemented');
-    // this.chains = '';
 
-    return this.chains;
+  finishChain() {
+    let res = this.chains;
+    this.chains = [];
+    return res.join('~~');
   }
 };
-
-// chainMaker.addLink('hello');
-// chainMaker.addLink('second');
-// chainMaker.addLink('third');
-// chainMaker.addLink();
-
-// // Проверка на добавление
-// console.log(chainMaker.chains);
-// // console.log('chainsLength =', chainMaker.chainsLength);
-
-// // Проверка на удаление
-// chainMaker.removeLink(0);
-// console.log(chainMaker.chains);
-// console.log('chainsLength =', chainMaker.chainsLength);
-
-// Проверка на реверс
-// chainMaker.reverseChain();
-// console.log(chainMaker.chains);
-
 
 module.exports = {
   chainMaker
