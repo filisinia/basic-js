@@ -17,19 +17,17 @@ const HALF_LIFE_PERIOD = 5730;
  * dateSample('WOOT!') => false
  *
  */
-function dateSample(/*sampleActivity*/) {
-  throw new NotImplementedError('Not implemented');
-  // const numsampleActivity = parseFloat(sampleActivity);
-  // if (sampleActivity <= 0 || typeof sampleActivity !== 'number') return false;
+function dateSample(sampleActivity) {
+  if (typeof sampleActivity !== 'string' || isNaN(Number(sampleActivity)) ||  Number(sampleActivity)<= 0) return false;
 
-  // const k = Math.LN2 / HALF_LIFE_PERIOD;
-  // const res = (MODERN_ACTIVITY / sampleActivity) / k;
+  const k = Math.LN2 / HALF_LIFE_PERIOD;
+  const res = Math.log(MODERN_ACTIVITY / Number(sampleActivity)) / k;
 
-  // if (typeof res === 'number' && res !== 'NaN') {
-  //   return res;
-  // } else {
-  //   return false;
-  // }
+  if (typeof res === 'number' && res !== 'NaN' && res >= 0) {
+    return Math.ceil(res);
+  } else {
+    return false;
+  }
 }
 
 module.exports = {
